@@ -1,0 +1,33 @@
+---
+title: "'Machine Learning' time series analysis"
+output: html_notebook
+author: "Akhil Matthews"
+---
+```{r}
+library(dplyr)
+#library(ggplot2)
+library(tidyr)
+library(fpp3)
+```
+```{r}
+# Dataframe
+ data <- read.csv("ML_time.csv", col.names = c('week', 'machine learning'))
+head(data)
+```
+```{r}
+summary(data)
+```
+```{r}
+# No missing data
+sum(is.na(data))
+```
+```{r}
+data$week = as.Date(data$week, "%d-%m-%Y")
+df = data.frame(week = yearweek(data$week), ml = data$machine.learning)
+df = as_tsibble(df)
+df %>% autoplot(ml)
+```
+```{r}
+ACF(df) %>% autoplot()
+
+```
